@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "436056628120",
+    "firebase_url": "https://fir-hauth.firebaseio.com",
+    "project_id": "fir-hauth",
+    "storage_bucket": "fir-hauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436056628120:android:81b15810fc186e9d4669ed",
+        "android_client_info": {
+          "package_name": "com.example.firebasehauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436056628120-l7nv19vtfkjo9ecga5dnnidn2upv93ec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebasehauth",
+            "certificate_hash": "b1aa1acf53a2739a955033cc61b6af2334d08434"
+          }
+        },
+        {
+          "client_id": "436056628120-1c340o6r281vflp502rs5uu0tm46hl4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3RymGZbBJFBUBOgntkhtgNvEZu1eVrwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436056628120-1c340o6r281vflp502rs5uu0tm46hl4l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
