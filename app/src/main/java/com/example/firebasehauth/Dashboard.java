@@ -87,7 +87,7 @@ public class Dashboard extends Fragment {
             weekday.setText(today);
             Glide.with(getContext()).asBitmap().load("https://www.metaweather.com/static/img/weather/png/"+weatherArray.getJSONObject(0).getString("weather_state_abbr")+".png").into(weatherIcon);
             weatherType.setText(weatherArray.getJSONObject(0).getString("weather_state_name"));
-            realTemp.setText(weatherArray.getJSONObject(0).getString("the_temp"));
+            realTemp.setText(weatherArray.getJSONObject(0).getString("the_temp").substring(0,5));
             minTemp.setText(weatherArray.getJSONObject(0).getString("min_temp"));
             maxTemp.setText(weatherArray.getJSONObject(0).getString("max_temp"));
         } catch (JSONException e) {
