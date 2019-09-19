@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,11 +25,18 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,12 +46,16 @@ import retrofit2.Response;
 public class Dashboard extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    TextView txt_name;
+    TextView txt_name,weatherType,realTemp,minTemp,maxTemp,weekday;
     Button btn_logot;
+    ImageView weatherIcon;
     FirebaseFirestore db;
     FirebaseUser user;
     Controller con;
-    ArrayList weatherArray;
+    JSONArray weatherArray;
+    JSONObject todayWeather;
+    String base_url,today;
+
 
     public Dashboard() {
         // Required empty public constructor
@@ -64,7 +77,22 @@ public class Dashboard extends Fragment {
         readFireStore();
         txt_name = view.findViewById(R.id.txt_dashname);
         btn_logot = view.findViewById(R.id.btn_logout);
-
+        weatherIcon=view.findViewById(R.id.weather_icon);
+        weatherType=view.findViewById(R.id.weather_type);
+        realTemp=view.findViewById(R.id.real_temp);
+        minTemp=view.findViewById(R.id.min_temp);
+        maxTemp=view.findViewById(R.id.max_temp);
+        weekday=view.findViewById(R.id.weekday);
+        try {
+            weekday.setText(today);
+            Glide.with(getContext()).asBitmap().load("https://www.metaweather.com/static/img/weather/png/"+weatherArray.getJSONObject(0).getString("weather_state_abbr")+".png").into(weatherIcon);
+            weatherType.setText(weatherArray.getJSONObject(0).getString("weather_state_name"));
+            realTemp.setText(weatherArray.getJSONObject(0).getString("the_temp"));
+            minTemp.setText(weatherArray.getJSONObject(0).getString("min_temp"));
+            maxTemp.setText(weatherArray.getJSONObject(0).getString("max_temp"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         btn_logot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +101,7 @@ public class Dashboard extends Fragment {
                 con.navigateToFragmnet(R.id.login,getActivity(),null);
             }
         });
+
     }
     public void readFireStore()
     {
@@ -96,44 +125,28 @@ public class Dashboard extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//weatherArray=new ArrayList();
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
-Call<List<ConsolidatedWeather>> weatherListCall=service.getList();
-weatherListCall.enqueue(new Callback<List<ConsolidatedWeather>>() {
-    @Override
-    public void onResponse(Call<List<ConsolidatedWeather>> call, Response<List<ConsolidatedWeather>> response) {
-        final List<ConsolidatedWeather> mweather =response.body();
-   weatherArray=new ArrayList(mweather);
-        System.out.println("size"+weatherArray.size());
+        Date now = new Date();
+        SimpleDateFormat   simpleDateformat = new SimpleDateFormat("EEEE");
+        today= simpleDateformat.format(now);
+        base_url="https://www.metaweather.com/api/location/3534/";
+        String myjson = null;
+        try {
+            myjson = new syncdata().execute(base_url).get();
+          //  Montreal m=new Montreal(myjson);
+            JSONObject montreal=new JSONObject(myjson);
+            Montreal montrealWeather=new Montreal();
 
-    }
+           // montrealWeather.setConsolidatedWeather(getJSONArray("consolidated_weather"));
+            weatherArray=montreal.getJSONArray("consolidated_weather");
+            System.out.println("JSON object "+montreal.getJSONArray("consolidated_weather"));
 
-    @Override
-    public void onFailure(Call<List<ConsolidatedWeather>> call, Throwable t) {
-        System.out.println("Failed this one");
-    }
-});
+        } catch (ExecutionException | JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-
-            Call<ConsolidatedWeather> mycall=service.montrealWeather();
-
-        mycall.enqueue(new Callback<ConsolidatedWeather>() {
-            @Override
-            public void onResponse(Call<ConsolidatedWeather> call, Response<ConsolidatedWeather> response) {
-                final ConsolidatedWeather weather=response.body();
-
-                //weather.getId();
-              Log.d("my weather", weather.toString());
-
-            }
-
-            @Override
-            public void onFailure(Call<ConsolidatedWeather> call, Throwable t) {
-                Log.d("Failed","in 2nd method");
-            }
-        });
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 

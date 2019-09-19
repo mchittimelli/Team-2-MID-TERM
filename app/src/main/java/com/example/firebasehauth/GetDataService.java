@@ -10,13 +10,11 @@ import retrofit2.http.Path;
 
 public interface GetDataService {
 
-    @GET("api/location/3534")
-    Call<WeatherPojo> getMontrealWeather();
+    @GET("api/location/3534/")
+    Call<Montreal> getMontrealWeather();
 
-    @GET("api/location/3534")
-    Call<List<ConsolidatedWeather>> getList();
+    @GET("api/location/3534/")
+    Call<ConsolidatedWeather> getWeather();
 
-    @GET("api/location/3534")
-    Call<ConsolidatedWeather> montrealWeather();
 
 }

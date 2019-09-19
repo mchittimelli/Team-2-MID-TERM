@@ -1,10 +1,10 @@
+
 package com.example.firebasehauth;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ConsolidatedWeather {
-
 
     @SerializedName("id")
     @Expose
@@ -38,7 +38,7 @@ public class ConsolidatedWeather {
     private Double windSpeed;
     @SerializedName("wind_direction")
     @Expose
-    private Integer windDirection;
+    private Double windDirection;
     @SerializedName("air_pressure")
     @Expose
     private Double airPressure;
@@ -132,11 +132,11 @@ public class ConsolidatedWeather {
         this.windSpeed = windSpeed;
     }
 
-    public Integer getWindDirection() {
+    public Double getWindDirection() {
         return windDirection;
     }
 
-    public void setWindDirection(Integer windDirection) {
+    public void setWindDirection(Double windDirection) {
         this.windDirection = windDirection;
     }
 
