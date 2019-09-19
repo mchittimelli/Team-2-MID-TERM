@@ -29,7 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +48,7 @@ import retrofit2.Response;
 public class Dashboard extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    TextView txt_name,weatherType,realTemp,minTemp,maxTemp,weekday;
+    TextView txt_name,weatherType,realTemp,minTemp,maxTemp,weekday,date,visibility,humidity;
     Button btn_logot;
     ImageView weatherIcon;
     FirebaseFirestore db;
@@ -54,8 +56,9 @@ public class Dashboard extends Fragment {
     Controller con;
     JSONArray weatherArray;
     JSONObject todayWeather;
-    String base_url,today;
-
+    int index;
+    String base_url,tDate;
+DayOfWeek dayOfWeek;
 
     public Dashboard() {
         // Required empty public constructor
@@ -83,13 +86,19 @@ public class Dashboard extends Fragment {
         minTemp=view.findViewById(R.id.min_temp);
         maxTemp=view.findViewById(R.id.max_temp);
         weekday=view.findViewById(R.id.weekday);
+        visibility=view.findViewById(R.id.visibility);
+        humidity=view.findViewById(R.id.humidity);
+        date=view.findViewById(R.id.date);
         try {
-            weekday.setText(today);
+            weekday.setText(dayOfWeek.toString());
+            date.setText(tDate);
             Glide.with(getContext()).asBitmap().load("https://www.metaweather.com/static/img/weather/png/"+weatherArray.getJSONObject(0).getString("weather_state_abbr")+".png").into(weatherIcon);
             weatherType.setText(weatherArray.getJSONObject(0).getString("weather_state_name"));
             realTemp.setText(weatherArray.getJSONObject(0).getString("the_temp").substring(0,5));
             minTemp.setText(weatherArray.getJSONObject(0).getString("min_temp"));
             maxTemp.setText(weatherArray.getJSONObject(0).getString("max_temp"));
+            visibility.setText(weatherArray.getJSONObject(0).getString("visibility").substring(0,5));
+            humidity.setText(weatherArray.getJSONObject(0).getString("humidity"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -127,8 +136,10 @@ public class Dashboard extends Fragment {
                              Bundle savedInstanceState) {
 
         Date now = new Date();
-        SimpleDateFormat   simpleDateformat = new SimpleDateFormat("EEEE");
-        today= simpleDateformat.format(now);
+        DateFormat dateFormat=new SimpleDateFormat("dd-MMMM-yyyy");
+       tDate= dateFormat.format(now);
+        index= Integer.parseInt(new SimpleDateFormat("u").format(new Date()));
+        dayOfWeek=DayOfWeek.of(index);
         base_url="https://www.metaweather.com/api/location/3534/";
         String myjson = null;
         try {

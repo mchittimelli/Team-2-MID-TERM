@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/edt_rname"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Enter Name"
         android:inputType="textPersonName"
@@ -24,7 +24,7 @@
 
     <EditText
         android:id="@+id/edt_remail"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Enter Email"
         android:inputType="textEmailAddress"
@@ -37,7 +37,7 @@
 
     <EditText
         android:id="@+id/edt_rpass"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Enter Password"
         android:inputType="textPassword"
@@ -50,7 +50,7 @@
 
     <EditText
         android:id="@+id/edt_rcpass"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Confirm Password"
         android:inputType="textPassword"
