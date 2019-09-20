@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="6"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Dashboard">
 
@@ -14,51 +13,50 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/txt_dashname"
-        android:layout_weight="0.5"
         android:layout_width="wrap_content"
-        android:layout_gravity="center"
         android:layout_height="0dp"
-        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.5"
         android:text="hello_blank_fragment"
-        android:textSize="20sp" />
-<TextView
-android:id="@+id/weekday"
+        android:textSize="25sp" />
 
-    android:textAlignment="center"
-    android:layout_weight="0.25"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"/>
     <TextView
-        android:id="@+id/date"
-
+        android:id="@+id/weekday"
         android:textAlignment="center"
-        android:layout_weight="0.25"
+        android:layout_weight="0.5"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:textColor="#1abced"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-                android:weightSum="2"
-        >
-    <ImageView
-        android:layout_weight="1"
-        android:id="@+id/weather_icon"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
+        android:weightSum="2">
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_gravity="left"
+            android:id="@+id/weather_icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
         <LinearLayout
             android:layout_weight="1"
             android:weightSum="3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
-        <TextView
-            android:id="@+id/real_temp"
-            android:textSize="40sp"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="2"/>
+            <TextView
+                android:id="@+id/real_temp"
+                android:textSize="35sp"
+                android:layout_gravity="center"
+                android:textColor="#e3a110"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="2"/>
 
             <LinearLayout
                 android:layout_weight="1"
@@ -68,8 +66,7 @@ android:id="@+id/weekday"
                 android:paddingTop="10dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="4"
-                >
+                android:weightSum="4">
 
                 <LinearLayout
                     android:layout_weight="1.5"
@@ -79,12 +76,14 @@ android:id="@+id/weekday"
 
                     <TextView
                         android:text="Min: "
+                        android:textColor="#000000"
                         android:textAlignment="textEnd"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
                     <TextView
                         android:id="@+id/min_temp"
+                        android:textColor="#0035b0"
                         android:textAlignment="textStart"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -99,6 +98,7 @@ android:id="@+id/weekday"
                     android:weightSum="2">
                     <TextView
                         android:text="Max: "
+                        android:textColor="#000000"
                         android:textAlignment="textEnd"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -106,6 +106,7 @@ android:id="@+id/weekday"
                     <TextView
 
                         android:id="@+id/max_temp"
+                        android:textColor="#0035b0"
                         android:textAlignment="textStart"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -114,94 +115,387 @@ android:id="@+id/weekday"
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.5"
-    android:weightSum="2"
-    ><TextView
-    android:layout_weight="1"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:text="How's Today: "
-    android:textAlignment="textEnd"
-    android:textSize="20sp"
-    android:paddingTop="10dp"
 
-    />
-    <TextView
-
-        android:textSize="20sp"
-        android:layout_weight="1"
-        android:paddingTop="10dp"
-        android:textAlignment="textStart"
-        android:id="@+id/weather_type"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-
-
-
-</LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
+        android:weightSum="2"
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="How's Today: "
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textAlignment="textEnd"
+            android:textSize="17sp"
+            android:paddingTop="10dp"/>
+
+        <TextView
+            android:textSize="17sp"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:textAlignment="textStart"
+            android:textStyle="italic"
+            android:id="@+id/weather_type"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
         android:weightSum="2"
         ><TextView
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:text="Humidity: "
+        android:textStyle="bold"
+        android:textColor="#000000"
         android:textAlignment="textEnd"
-        android:textSize="20sp"
-        android:paddingTop="10dp"
+        android:textSize="17sp"
+        android:paddingTop="10dp"/>
 
-        />
         <TextView
-
-            android:textSize="20sp"
+            android:textSize="17sp"
+            android:textColor="#000000"
+            android:textStyle="italic"
             android:layout_weight="1"
             android:paddingTop="10dp"
             android:textAlignment="textStart"
             android:id="@+id/humidity"
-            android:textColor="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
 
-
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:weightSum="2"
         ><TextView
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:text="Visibility: "
+        android:text="Predictability: "
+        android:textStyle="bold"
+        android:textColor="#000000"
         android:textAlignment="textEnd"
-        android:textSize="20sp"
-        android:paddingTop="10dp"
+        android:textSize="17sp"
+        android:paddingTop="10dp"/>
 
-        />
         <TextView
-
-            android:textSize="20sp"
+            android:textSize="17sp"
+            android:textColor="#000000"
+            android:textStyle="italic"
             android:layout_weight="1"
             android:paddingTop="10dp"
             android:textAlignment="textStart"
-            android:id="@+id/visibility"
-            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/predictability"
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
 
-
-
     </LinearLayout>
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:weightSum="2"/>
+
+    <LinearLayout
+        android:layout_weight="1.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:weightSum="0.5">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Tomorrow"
+                    android:id="@+id/tom"
+                    android:textColor="#1abced"
+                    android:textStyle="bold"
+                    android:textSize="17sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:weightSum="0.5">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tomorrow"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:weightSum="2">
+                <LinearLayout
+                    android:layout_weight="1.5"
+                    android:weightSum="2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:text="Min: "
+                        android:textColor="#000000"
+                        android:textAlignment="textEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/tmin_temp"
+                        android:textColor="#0035b0"
+                        android:textAlignment="textStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:weightSum="2">
+                <LinearLayout
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:weightSum="2">
+                    <TextView
+                        android:text="Max: "
+                        android:textColor="#000000"
+                        android:textAlignment="textEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <TextView
+
+                        android:id="@+id/tmax_temp"
+                        android:textColor="#0035b0"
+                        android:textAlignment="textStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:weightSum="0.5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/dayaftertom"
+                    android:textColor="#1abced"
+                    android:textStyle="bold"
+                    android:textSize="17sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:weightSum="0.5">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dayafter"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:weightSum="2">
+                <LinearLayout
+                    android:layout_weight="1.5"
+                    android:weightSum="2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:text="Min: "
+                        android:textColor="#000000"
+                        android:textAlignment="textEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/damin_temp"
+                        android:textColor="#0035b0"
+                        android:textAlignment="textStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:weightSum="2">
+                <LinearLayout
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:weightSum="2">
+                    <TextView
+                        android:text="Max: "
+                        android:textColor="#000000"
+                        android:textAlignment="textEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <TextView
+
+                        android:id="@+id/damax_temp"
+                        android:textColor="#0035b0"
+                        android:textAlignment="textStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:weightSum="0.5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/dayafteraftertom"
+                    android:textColor="#1abced"
+                    android:textStyle="bold"
+                    android:textSize="17sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:weightSum="0.5">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dayafterafter"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:weightSum="2">
+                <LinearLayout
+                    android:layout_weight="1.5"
+                    android:weightSum="2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:text="Min: "
+                        android:textColor="#000000"
+                        android:textAlignment="textEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/daamin_temp"
+                        android:textColor="#0035b0"
+                        android:textAlignment="textStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:weightSum="2">
+                <LinearLayout
+                    android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:weightSum="2">
+                    <TextView
+                        android:text="Max: "
+                        android:textColor="#000000"
+                        android:textAlignment="textEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                    <TextView
+
+                        android:id="@+id/daamax_temp"
+                        android:textColor="#0035b0"
+                        android:textAlignment="textStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- <LinearLayout
         android:layout_gravity="center"
         android:layout_weight="1"
         android:layout_width="wrap_content"
@@ -275,7 +569,7 @@ android:id="@+id/weekday"
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
 
-    </LinearLayout>
+    </LinearLayout> -->
     <Button
         android:id="@+id/btn_logout"
         android:layout_weight="0.5"

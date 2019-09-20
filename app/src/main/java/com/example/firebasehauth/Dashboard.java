@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -44,21 +44,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.util.Calendar.DAY_OF_WEEK;
+
 
 public class Dashboard extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    TextView txt_name,weatherType,realTemp,minTemp,maxTemp,weekday,date,visibility,humidity;
+    TextView txt_name,weatherType,realTemp,minTemp,maxTemp,weekday, humidity, predictability, txt_tomorrow, txt_dayafter, txt_dayafterafter, tmin, tmax, damin, damax, daamin, daamax;
     Button btn_logot;
-    ImageView weatherIcon;
+    ImageView weatherIcon, tomorrow, dayafter, dayafterafter;
     FirebaseFirestore db;
     FirebaseUser user;
+    FirebaseAuth auth;
     Controller con;
     JSONArray weatherArray;
     JSONObject todayWeather;
-    int index;
-    String base_url,tDate;
-DayOfWeek dayOfWeek;
+    String base_url,today, tom, dayaftertom, dayafteraftertom;
+
 
     public Dashboard() {
         // Required empty public constructor
@@ -69,6 +71,8 @@ DayOfWeek dayOfWeek;
         super.onCreate(savedInstanceState);
         user = getArguments().getParcelable("user");
         db = FirebaseFirestore.getInstance();
+
+
 
 
     }
@@ -86,19 +90,49 @@ DayOfWeek dayOfWeek;
         minTemp=view.findViewById(R.id.min_temp);
         maxTemp=view.findViewById(R.id.max_temp);
         weekday=view.findViewById(R.id.weekday);
-        visibility=view.findViewById(R.id.visibility);
-        humidity=view.findViewById(R.id.humidity);
-        date=view.findViewById(R.id.date);
+        humidity = view.findViewById(R.id.humidity);
+        predictability = view.findViewById(R.id.predictability);
+
+        tomorrow = view.findViewById(R.id.tomorrow);
+        dayafter = view.findViewById(R.id.dayafter);
+        dayafterafter = view.findViewById(R.id.dayafterafter);
+
+        txt_tomorrow = view.findViewById(R.id.tom);
+        txt_dayafter = view.findViewById(R.id.dayaftertom);
+        txt_dayafterafter = view.findViewById(R.id.dayafteraftertom);
+
+        tmin = view.findViewById(R.id.tmin_temp);
+        tmax = view.findViewById(R.id.tmax_temp);
+
+        damin = view.findViewById(R.id.damin_temp);
+        damax = view.findViewById(R.id.damax_temp);
+
+        daamin = view.findViewById(R.id.daamin_temp);
+        daamax = view.findViewById(R.id.daamax_temp);
+
         try {
-            weekday.setText(dayOfWeek.toString());
-            date.setText(tDate);
+            weekday.setText("Today: " + today);
             Glide.with(getContext()).asBitmap().load("https://www.metaweather.com/static/img/weather/png/"+weatherArray.getJSONObject(0).getString("weather_state_abbr")+".png").into(weatherIcon);
             weatherType.setText(weatherArray.getJSONObject(0).getString("weather_state_name"));
-            realTemp.setText(weatherArray.getJSONObject(0).getString("the_temp").substring(0,5));
-            minTemp.setText(weatherArray.getJSONObject(0).getString("min_temp"));
-            maxTemp.setText(weatherArray.getJSONObject(0).getString("max_temp"));
-            visibility.setText(weatherArray.getJSONObject(0).getString("visibility").substring(0,5));
-            humidity.setText(weatherArray.getJSONObject(0).getString("humidity"));
+            realTemp.setText(weatherArray.getJSONObject(0).getString("the_temp").substring(0,4) + "°C");
+            minTemp.setText(weatherArray.getJSONObject(0).getString("min_temp").substring(0,5) + "°C");
+            maxTemp.setText(weatherArray.getJSONObject(0).getString("max_temp").substring(0,5) + "°C");
+            humidity.setText(weatherArray.getJSONObject(0).getString("humidity") + "%");
+            predictability.setText(weatherArray.getJSONObject(0).getString("predictability") + "%");
+
+            Glide.with(getContext()).asBitmap().load("https://www.metaweather.com/static/img/weather/png/"+weatherArray.getJSONObject(1).getString("weather_state_abbr")+".png").into(tomorrow);
+            txt_tomorrow.setText(tom);
+            tmin.setText(weatherArray.getJSONObject(1).getString("min_temp").substring(0,5) + "°C");
+            tmax.setText(weatherArray.getJSONObject(1).getString("max_temp").substring(0,5) + "°C");
+            Glide.with(getContext()).asBitmap().load("https://www.metaweather.com/static/img/weather/png/"+weatherArray.getJSONObject(2).getString("weather_state_abbr")+".png").into(dayafter);
+            txt_dayafter.setText(dayaftertom);
+            damin.setText(weatherArray.getJSONObject(2).getString("min_temp").substring(0,5) + "°C");
+            damax.setText(weatherArray.getJSONObject(2).getString("max_temp").substring(0,5) + "°C");
+            Glide.with(getContext()).asBitmap().load("https://www.metaweather.com/static/img/weather/png/"+weatherArray.getJSONObject(3).getString("weather_state_abbr")+".png").into(dayafterafter);
+            txt_dayafterafter.setText(dayafteraftertom);
+            daamin.setText(weatherArray.getJSONObject(3).getString("min_temp").substring(0,5) + "°C");
+            daamax.setText(weatherArray.getJSONObject(3).getString("max_temp").substring(0,5) + "°C");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -114,6 +148,7 @@ DayOfWeek dayOfWeek;
     }
     public void readFireStore()
     {
+
         DocumentReference docref = db.collection("users").document(user.getUid());
 
         docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -135,22 +170,35 @@ DayOfWeek dayOfWeek;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Calendar calendar = Calendar.getInstance();
         Date now = new Date();
-        DateFormat dateFormat=new SimpleDateFormat("dd-MMMM-yyyy");
-       tDate= dateFormat.format(now);
-        index= Integer.parseInt(new SimpleDateFormat("u").format(new Date()));
-        dayOfWeek=DayOfWeek.of(index);
-        base_url="https://www.metaweather.com/api/location/3534/";
+        calendar.setTime(now);
+        calendar.add(DAY_OF_WEEK,1);
+
+
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE");
+        today = simpleDateformat.format(now);
+        tom = calendar.getTime().toString().substring(0,3) + ", " + calendar.getTime().toString().substring(4,10);
+        calendar.add(DAY_OF_WEEK,1);
+
+        dayaftertom = calendar.getTime().toString().substring(0,3) + ", " + calendar.getTime().toString().substring(4,10);
+        calendar.add(DAY_OF_WEEK,1);
+
+        dayafteraftertom = calendar.getTime().toString().substring(0,3) + ", " + calendar.getTime().toString().substring(4,10);
+
+        System.out.println("Tomorrow: " + calendar.getTime().toString().substring(0,3) + ", " + calendar.getTime().toString().substring(4,10));
+
+        base_url = "https://www.metaweather.com/api/location/3534/";
         String myjson = null;
         try {
             myjson = new syncdata().execute(base_url).get();
-          //  Montreal m=new Montreal(myjson);
-            JSONObject montreal=new JSONObject(myjson);
-            Montreal montrealWeather=new Montreal();
+            //  Montreal m=new Montreal(myjson);
+            JSONObject montreal = new JSONObject(myjson);
+            Montreal montrealWeather = new Montreal();
 
-           // montrealWeather.setConsolidatedWeather(getJSONArray("consolidated_weather"));
-            weatherArray=montreal.getJSONArray("consolidated_weather");
-            System.out.println("JSON object "+montreal.getJSONArray("consolidated_weather"));
+            // montrealWeather.setConsolidatedWeather(getJSONArray("consolidated_weather"));
+            weatherArray = montreal.getJSONArray("consolidated_weather");
+            System.out.println("JSON object " + montreal.getJSONArray("consolidated_weather"));
 
         } catch (ExecutionException | JSONException e) {
             e.printStackTrace();
