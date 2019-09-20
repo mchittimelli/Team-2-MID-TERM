@@ -24,6 +24,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class login extends Fragment implements View.OnClickListener {
@@ -34,6 +40,7 @@ public class login extends Fragment implements View.OnClickListener {
 
     private FirebaseAuth auth;
     FirebaseUser user;
+    FirebaseFirestore db;
 
     public login() {
         // Required empty public constructor
@@ -44,6 +51,7 @@ public class login extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
     }
 
@@ -128,7 +136,10 @@ public class login extends Fragment implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     user = auth.getCurrentUser();
                     Toast.makeText(getActivity().getApplicationContext(), "Login Success!", Toast.LENGTH_LONG).show();
-
+                    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+                    Date dateobj = new Date();
+                    DocumentReference docref = db.collection("users").document(user.getUid());
+                    docref.update("currentLogin",df.format(dateobj));
                     updateUI(user);
 
                 } else {

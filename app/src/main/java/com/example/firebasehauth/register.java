@@ -28,6 +28,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -145,6 +148,10 @@ public class register extends Fragment {
                     Map<String, Object> usermap = new HashMap<>();
                     usermap.put("Name", name);
                     usermap.put("Email", email);
+                    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+                    Date dateobj = new Date();
+                    usermap.put("LastLogin","");
+                    usermap.put("currentLogin",df.format(dateobj));
 
                     db.collection("users").document(user.getUid()).set(usermap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

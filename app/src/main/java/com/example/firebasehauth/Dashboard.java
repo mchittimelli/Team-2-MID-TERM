@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,19 +32,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+
 import java.util.concurrent.ExecutionException;
 
-import javax.inject.Inject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static java.util.Calendar.DAY_OF_WEEK;
 
@@ -50,17 +46,14 @@ import static java.util.Calendar.DAY_OF_WEEK;
 public class Dashboard extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    TextView txt_name,weatherType,realTemp,minTemp,maxTemp,weekday, humidity, predictability, txt_tomorrow, txt_dayafter, txt_dayafterafter, tmin, tmax, damin, damax, daamin, daamax;
+    TextView last_login,txt_name,weatherType,realTemp,minTemp,maxTemp,weekday, humidity, predictability, txt_tomorrow, txt_dayafter, txt_dayafterafter, tmin, tmax, damin, damax, daamin, daamax;
     Button btn_logot;
     ImageView weatherIcon, tomorrow, dayafter, dayafterafter;
     FirebaseFirestore db;
     FirebaseUser user;
-    FirebaseAuth auth;
     Controller con;
     JSONArray weatherArray;
-    JSONObject todayWeather;
-    String base_url,today, tom, dayaftertom, dayafteraftertom;
-
+    String base_url,today, tom, dayaftertom, dayafteraftertom,cLogin;
 
     public Dashboard() {
         // Required empty public constructor
@@ -74,7 +67,6 @@ public class Dashboard extends Fragment {
 
 
 
-
     }
 
     @Override
@@ -83,6 +75,7 @@ public class Dashboard extends Fragment {
 
         readFireStore();
         txt_name = view.findViewById(R.id.txt_dashname);
+        last_login=view.findViewById(R.id.last_login);
         btn_logot = view.findViewById(R.id.btn_logout);
         weatherIcon=view.findViewById(R.id.weather_icon);
         weatherType=view.findViewById(R.id.weather_type);
@@ -139,6 +132,9 @@ public class Dashboard extends Fragment {
         btn_logot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                DocumentReference docref = db.collection("users").document(user.getUid());
+                docref.update("LastLogin",cLogin);
                 FirebaseAuth.getInstance().signOut();
                 con = new Controller();
                 con.navigateToFragmnet(R.id.login,getActivity(),null);
@@ -148,9 +144,7 @@ public class Dashboard extends Fragment {
     }
     public void readFireStore()
     {
-
         DocumentReference docref = db.collection("users").document(user.getUid());
-
         docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -160,7 +154,10 @@ public class Dashboard extends Fragment {
                     if (snap.exists())
                     {
                         Log.d("Snap Data",snap.getData().toString());
+
                         txt_name.setText("Welcome "+snap.get("Name")+"!");
+                        last_login.setText("Last Login at "+snap.get("LastLogin"));
+                        cLogin=snap.get("currentLogin").toString();
                     }
                 }
             }
