@@ -150,7 +150,7 @@ public class register extends Fragment {
                     usermap.put("Email", email);
                     DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
                     Date dateobj = new Date();
-                    usermap.put("LastLogin","");
+                    usermap.put("LastLogin",null);
                     usermap.put("currentLogin",df.format(dateobj));
 
                     db.collection("users").document(user.getUid()).set(usermap).addOnSuccessListener(new OnSuccessListener<Void>() {

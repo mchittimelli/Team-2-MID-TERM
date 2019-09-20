@@ -156,7 +156,10 @@ public class Dashboard extends Fragment {
                         Log.d("Snap Data",snap.getData().toString());
 
                         txt_name.setText("Welcome "+snap.get("Name")+"!");
+                        if(snap.get("LastLogin")!=null)
                         last_login.setText("Last Login at "+snap.get("LastLogin"));
+                        else
+                            last_login.setText("You don't have any last login activity");
                         cLogin=snap.get("currentLogin").toString();
                     }
                 }
